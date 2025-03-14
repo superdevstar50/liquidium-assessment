@@ -3,7 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { ONE_BTC_IN_USD } from "@/consts";
-import { formatBTC, formatUSD } from "@/utils";
+import { calculateAPRandAPY, formatBTC, formatUSD } from "@/utils";
 import { Check, Info } from "lucide-react";
 import { useWatch } from "react-hook-form";
 
@@ -12,6 +12,9 @@ const userBalance = 0.2132;
 export function OfferForm() {
   const amount = useWatch({ name: "amount" });
   const interest = useWatch({ name: "interest" });
+  const term = useWatch({ name: "term" });
+
+  const { apr, apy } = calculateAPRandAPY(interest, term);
 
   return (
     <div className="flex flex-col gap-4 w-full">
@@ -70,9 +73,9 @@ export function OfferForm() {
           />
           <Badge variant="destructive">
             <div>
-              181% APY
+              {apy}% APY
               <Separator />
-              104% APR
+              {apr}% APR
             </div>
           </Badge>
         </div>

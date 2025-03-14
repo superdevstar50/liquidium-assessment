@@ -38,3 +38,14 @@ export const sleep = (time: number) =>
       res(true);
     }, time)
   );
+
+export function calculateAPRandAPY(
+  interest: number,
+  termDays: number
+): { apr: number; apy: number } {
+  const apr = (interest / termDays) * 365;
+
+  const apy = ((1 + interest / 100) ** (365 / termDays) - 1) * 100;
+
+  return { apr: Math.floor(apr), apy: Math.floor(apy) };
+}
