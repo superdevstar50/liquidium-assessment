@@ -3,7 +3,7 @@ import { Info } from "./_components/info";
 import { Ordinals } from "./_components/ordinals";
 import { Offers } from "./_components/offers";
 
-export default function Home() {
+export default async function Home() {
   return (
     <div className="lg:py-16 lg:px-32 py-4 px-8 flex flex-col gap-10">
       <div className="flex flex-col gap-4">

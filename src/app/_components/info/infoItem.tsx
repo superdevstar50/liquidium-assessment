@@ -1,6 +1,7 @@
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { ONE_BTC_IN_USD } from "@/consts";
+import { formatBTC, formatUSD } from "@/utils";
 
 export interface InfoItemProps {
   title: string;
@@ -13,9 +14,9 @@ export function InfoItem({ title, amount }: InfoItemProps) {
       <CardContent>
         <div className="text-base leading-9 font-medium">{title}</div>
         <div className="text-3xl leading-11 font-semibold flex items-center gap-2.5">
-          ₿{amount}
+          {formatBTC(amount)}
           <Badge variant="secondary" className="text-base">
-            ${amount * ONE_BTC_IN_USD}
+            {formatUSD(amount * ONE_BTC_IN_USD)}
           </Badge>
         </div>
       </CardContent>
