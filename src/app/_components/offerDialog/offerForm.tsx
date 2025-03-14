@@ -33,21 +33,18 @@ export function OfferForm() {
         <Label htmlFor="amount">
           Amount <Check size={12} />
         </Label>
-        <div className="flex justify-between items-center">
-          <div className="flex items-center gap-4">
-            <NumberInput
-              name="amount"
-              inputProps={{
-                id: "amount",
-                type: "number",
-                className: "max-w-40",
-                step: 0.000001,
-                min: 0,
-              }}
-            />
-
-            <div>{formatUSD(amount * ONE_BTC_IN_USD)}</div>
-          </div>
+        <div className="flex justify-between items-start">
+          <NumberInput
+            name="amount"
+            inputProps={{
+              id: "amount",
+              type: "number",
+              className: "max-w-40",
+              step: 0.000001,
+              min: 0,
+            }}
+            rightContent={<div>{formatUSD(amount * ONE_BTC_IN_USD)}</div>}
+          />
           <Badge variant="secondary">Bal: {formatBTC(userBalance)}</Badge>
         </div>
       </div>
@@ -55,22 +52,22 @@ export function OfferForm() {
         <Label htmlFor="interest">
           Interest <Check size={12} />
         </Label>
-        <div className="flex justify-between items-center">
-          <div className="flex items-center gap-4">
-            <NumberInput
-              name="interest"
-              inputProps={{
-                id: "interest",
-                type: "number",
-                className: "max-w-40",
-                min: 0,
-              }}
-            />
-            <div>
-              {formatBTC((interest / 100) * amount)} |{" "}
-              {formatUSD((interest / 100) * amount * ONE_BTC_IN_USD)}
-            </div>
-          </div>
+        <div className="flex justify-between items-start">
+          <NumberInput
+            name="interest"
+            inputProps={{
+              id: "interest",
+              type: "number",
+              className: "max-w-40",
+              min: 0,
+            }}
+            rightContent={
+              <div>
+                {formatBTC((interest / 100) * amount)} |{" "}
+                {formatUSD((interest / 100) * amount * ONE_BTC_IN_USD)}
+              </div>
+            }
+          />
           <Badge variant="destructive">
             <div>
               181% APY
