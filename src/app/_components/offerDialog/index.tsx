@@ -50,6 +50,11 @@ export function OfferDialog({
   const [ordinal, setOrdinal] = useState<OrdinalWithFloor>();
 
   useEffect(() => {
+    if (!open) {
+      setOrdinal(undefined);
+      return;
+    }
+
     fetchOrdinal({ id: ordinalId }).then((ordinal) => {
       if (!ordinal) {
         return;
@@ -58,7 +63,7 @@ export function OfferDialog({
         setOrdinal(ordinals[0]);
       });
     });
-  }, [ordinalId]);
+  }, [ordinalId, open]);
 
   const onSubmit: SubmitHandler<OfferInputType> = async (data) => {
     if (!ordinal) {
