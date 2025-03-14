@@ -4,12 +4,20 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Ordinal } from "@/types";
 import { formatBTC, formatInscriptionId, satToBtc } from "@/utils";
+import { OfferDialog } from "../offerDialog";
+import { useState } from "react";
 
 export interface OrdinalItemProps {
   data: Ordinal;
 }
 
 export function OrdinalItem({ data }: OrdinalItemProps) {
+  const [open, setOpen] = useState(false);
+
+  const handleCreateOffer = () => {
+    setOpen(true);
+  };
+
   return (
     <Card className="p-0">
       <CardContent className="p-4 flex flex-col gap-3 md:min-w-60 md:max-w-60 min-w-44 max-w-44">
@@ -44,7 +52,15 @@ export function OrdinalItem({ data }: OrdinalItemProps) {
           </Badge>
         </div>
 
-        <Button variant="destructive">Create offer</Button>
+        <Button variant="destructive" onClick={handleCreateOffer}>
+          Create offer
+        </Button>
+
+        <OfferDialog
+          open={open}
+          ordinalId={data.inscription_id}
+          setOpen={setOpen}
+        />
       </CardContent>
     </Card>
   );

@@ -1,5 +1,4 @@
 "use client";
-import { OfferDialog } from "../offerDialog";
 import { useState } from "react";
 import { OrdinalList } from "./ordinalList";
 import { Input } from "@/components/ui/input";
@@ -12,7 +11,6 @@ export function Ordinals() {
 
   return (
     <div className="py-10 flex flex-col gap-5">
-      <OfferDialog />
       <div className="flex justify-center">
         <Input
           placeholder="Search inscription"

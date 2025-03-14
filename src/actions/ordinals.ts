@@ -50,3 +50,7 @@ export async function fetchOrdinals({ query = "" }: { query?: string } = {}) {
     )
     .slice(0, 10);
 }
+
+export async function fetchOrdinal({ id }: { id: string }) {
+  return ordinals.data.find((ordinal) => ordinal.inscription_id === id);
+}
