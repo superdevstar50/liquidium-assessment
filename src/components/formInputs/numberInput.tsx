@@ -1,9 +1,9 @@
 import { Controller, ControllerProps } from "react-hook-form";
-import { Input } from "../ui/input";
+import { Input, InputProps } from "../ui/input";
 import { ReactNode } from "react";
 
 export interface NumberInputProps extends Omit<ControllerProps, "render"> {
-  inputProps?: Omit<React.ComponentProps<"input">, "onChange">;
+  inputProps?: Omit<InputProps, "onChange">;
   rightContent?: ReactNode;
 }
 

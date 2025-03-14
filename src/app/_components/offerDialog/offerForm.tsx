@@ -27,8 +27,9 @@ export function OfferForm() {
           inputProps={{
             id: "term",
             type: "number",
-            className: "max-w-40",
             min: 1,
+            endIcon: <Badge variant="secondary">Days</Badge>,
+            wrapperClassName: "pr-1 py-1 md:max-w-40 max-w-20",
           }}
         />
       </div>
@@ -42,9 +43,10 @@ export function OfferForm() {
             inputProps={{
               id: "amount",
               type: "number",
-              className: "max-w-40",
               step: 0.000001,
               min: 0,
+              endIcon: <Badge variant="secondary">₿</Badge>,
+              wrapperClassName: "pr-1 py-1 md:max-w-40 max-w-20",
             }}
             rightContent={<div>{formatUSD(amount * ONE_BTC_IN_USD)}</div>}
           />
@@ -61,8 +63,9 @@ export function OfferForm() {
             inputProps={{
               id: "interest",
               type: "number",
-              className: "max-w-40",
               min: 0,
+              endIcon: <Badge variant="secondary">%</Badge>,
+              wrapperClassName: "pr-1 py-1 md:max-w-40 max-w-20",
             }}
             rightContent={
               <div>
