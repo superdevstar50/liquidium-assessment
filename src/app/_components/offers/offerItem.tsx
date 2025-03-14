@@ -9,6 +9,17 @@ import { formatBTC } from "@/utils";
 import { Pen, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { OfferDialog } from "../offerDialog";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 export interface OfferItemProps {
   data: OfferWithOrdinal;
@@ -92,14 +103,32 @@ export function OfferItem({ data }: OfferItemProps) {
         >
           <Pen />
         </Button>
-        <Button
-          variant="destructive"
-          className="rounded-full"
-          onClick={handleDelete}
-          disabled={loading}
-        >
-          {loading ? <Spinner /> : <Trash2 />}
-        </Button>
+        <AlertDialog>
+          <AlertDialogTrigger asChild>
+            <Button
+              variant="destructive"
+              className="rounded-full"
+              disabled={loading}
+            >
+              {loading ? <Spinner /> : <Trash2 />}
+            </Button>
+          </AlertDialogTrigger>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+              <AlertDialogDescription>
+                This action cannot be undone. This will permanently delete your
+                offer and remove your data from our servers.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogAction onClick={handleDelete}>
+                Continue
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
       </div>
       <OfferDialog
         open={open}

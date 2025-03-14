@@ -20,7 +20,7 @@ export function OrdinalItem({ data }: OrdinalItemProps) {
 
   return (
     <Card className="p-0">
-      <CardContent className="p-4 flex flex-col gap-3 md:min-w-60 md:max-w-60 min-w-44 max-w-44">
+      <CardContent className="p-4 flex flex-col gap-3 md:min-w-64 md:max-w-64 min-w-44 max-w-44">
         <div className="flex justify-center">
           <Avatar className="w-24 h-24">
             <AvatarImage
