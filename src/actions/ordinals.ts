@@ -3,6 +3,7 @@ import ordinals from "@/data/your_owned_ordinals.json";
 import supportedOrdinals from "@/data/supported_ordinal_collections.json";
 import { satToBtc } from "@/utils";
 import { Ordinal } from "@/types";
+import { mapBestOffer } from "./utils";
 
 const supportedOrdinalsSet = new Set(
   supportedOrdinals.map((item) => item.slug)
@@ -37,18 +38,20 @@ export async function fetchOrdinalInfo() {
 export async function fetchOrdinals({ query = "" }: { query?: string } = {}) {
   const allowedOrdinals = ordinals.data.filter(isAllowedOrdinal);
   if (!query) {
-    return allowedOrdinals.slice(0, 10);
+    return await mapBestOffer(allowedOrdinals);
   }
 
   const clearedQuery = query.toLowerCase().trim();
 
-  return allowedOrdinals
-    .filter(
-      (ordinal) =>
-        ordinal.inscription_name?.toLowerCase().includes(clearedQuery) ||
-        ordinal.collection_name?.toLowerCase().includes(clearedQuery)
-    )
-    .slice(0, 10);
+  return await mapBestOffer(
+    allowedOrdinals
+      .filter(
+        (ordinal) =>
+          ordinal.inscription_name?.toLowerCase().includes(clearedQuery) ||
+          ordinal.collection_name?.toLowerCase().includes(clearedQuery)
+      )
+      .slice(0, 10)
+  );
 }
 
 export async function fetchOrdinal({ id }: { id: string }) {

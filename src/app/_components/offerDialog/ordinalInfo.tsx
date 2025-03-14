@@ -1,5 +1,5 @@
 import { fetchOrdinal } from "@/actions/ordinals";
-import { Avatar } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useFetch } from "@/hooks/useFetch";
@@ -39,11 +39,10 @@ export function OrdinalInfo({ ordinalId }: OrdinalInfoProps) {
   return (
     <div className="flex flex-col gap-2">
       <div className="flex gap-4">
-        {data.render_url && (
-          <Avatar className="w-24 h-24">
-            <AvatarImage src={data.render_url} />
-          </Avatar>
-        )}
+        <Avatar className="w-24 h-24">
+          {data.render_url && <AvatarImage src={data.render_url} />}
+          <AvatarFallback />
+        </Avatar>
         <div className="w-full">
           <div className="flex justify-between items-center">
             Collection:
@@ -71,7 +70,7 @@ export function OrdinalInfo({ ordinalId }: OrdinalInfoProps) {
           </div>
         </div>
       </div>
-      <Button variant="outline" onClick={handleView}>
+      <Button type="button" variant="outline" onClick={handleView}>
         <ScanSearch />
         View
       </Button>

@@ -2,7 +2,6 @@
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
@@ -13,9 +12,12 @@ import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import { Offer } from "@prisma/client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { offerSchema } from "./schema";
-import { createOffer } from "@/actions/offers";
+import { createOffer, updateOffer } from "@/actions/offers";
 import { Spinner } from "@/components/ui/spinner";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { fetchOrdinal } from "@/actions/ordinals";
+import { mapCollectionFloor } from "@/actions/utils";
+import { OrdinalWithFloor } from "@/types";
 
 type OfferInputType = Omit<Offer, "id" | "ordinalId">;
 
@@ -23,11 +25,19 @@ export interface OfferDialogProps {
   open: boolean;
   setOpen?: (open: boolean) => void;
   ordinalId: string;
+  offer?: Offer;
 }
 
-export function OfferDialog({ open, ordinalId, setOpen }: OfferDialogProps) {
+export function OfferDialog({
+  open,
+  ordinalId,
+  setOpen,
+  offer,
+}: OfferDialogProps) {
+  const isEditing = !!offer;
+
   const form = useForm<OfferInputType>({
-    defaultValues: {
+    defaultValues: offer ?? {
       amount: 0.5,
       interest: 2,
       term: 7,
@@ -37,13 +47,44 @@ export function OfferDialog({ open, ordinalId, setOpen }: OfferDialogProps) {
 
   const [loading, setLoading] = useState(false);
 
+  const [ordinal, setOrdinal] = useState<OrdinalWithFloor>();
+
+  useEffect(() => {
+    fetchOrdinal({ id: ordinalId }).then((ordinal) => {
+      if (!ordinal) {
+        return;
+      }
+      mapCollectionFloor([ordinal]).then((ordinals) => {
+        setOrdinal(ordinals[0]);
+      });
+    });
+  }, [ordinalId]);
+
   const onSubmit: SubmitHandler<OfferInputType> = async (data) => {
+    if (!ordinal) {
+      return;
+    }
+
+    if (ordinal.floorAmount && data.amount > ordinal.floorAmount) {
+      form.setError("amount", {
+        message: `Amount should be lower than floor price. Floor price: ${ordinal.floorAmount}`,
+      });
+      return;
+    }
+
     try {
       setLoading(true);
-      await createOffer({
-        ...data,
-        ordinalId,
-      });
+      if (isEditing) {
+        updateOffer({
+          ...data,
+          id: offer.id,
+        });
+      } else {
+        await createOffer({
+          ...data,
+          ordinalId,
+        });
+      }
 
       setOpen?.(false);
     } catch {
@@ -56,10 +97,12 @@ export function OfferDialog({ open, ordinalId, setOpen }: OfferDialogProps) {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle className="pb-8">Create a custom request</DialogTitle>
+          <DialogTitle className="pb-8">
+            {isEditing ? "Edit custom request" : "Create a custom request"}
+          </DialogTitle>
           <FormProvider {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)}>
-              <DialogDescription className="flex flex-col gap-4">
+              <div className="flex flex-col gap-4">
                 <OrdinalInfo ordinalId={ordinalId} />
                 <OfferForm />
                 <div className="flex justify-between">
@@ -76,10 +119,10 @@ export function OfferDialog({ open, ordinalId, setOpen }: OfferDialogProps) {
                     disabled={loading}
                   >
                     {loading && <Spinner />}
-                    Create request
+                    {isEditing ? "Edit request" : "Create request"}
                   </Button>
                 </div>
-              </DialogDescription>
+              </div>
             </form>
           </FormProvider>
         </DialogHeader>
