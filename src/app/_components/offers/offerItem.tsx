@@ -20,6 +20,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { toast } from "sonner";
 
 export interface OfferItemProps {
   data: OfferWithOrdinal;
@@ -37,7 +38,9 @@ export function OfferItem({ data }: OfferItemProps) {
     setLoading(true);
     try {
       await deleteOffer({ id: data.id });
+      toast.success("Successfully deleted");
     } catch {
+      toast.success("Error occured while deleting");
     } finally {
       setLoading(false);
     }

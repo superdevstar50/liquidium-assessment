@@ -18,6 +18,7 @@ import { useEffect, useState } from "react";
 import { fetchOrdinal } from "@/actions/ordinals";
 import { mapCollectionFloor } from "@/actions/utils";
 import { OrdinalWithFloor } from "@/types";
+import { toast } from "sonner";
 
 type OfferInputType = Omit<Offer, "id" | "ordinalId">;
 
@@ -80,19 +81,24 @@ export function OfferDialog({
     try {
       setLoading(true);
       if (isEditing) {
-        updateOffer({
+        await updateOffer({
           ...data,
           id: offer.id,
         });
+
+        toast.success("Successfully updated");
       } else {
         await createOffer({
           ...data,
           ordinalId,
         });
+
+        toast.success("Successfully created");
       }
 
       setOpen?.(false);
     } catch {
+      toast.error(`Error occured while ${isEditing ? "updating" : "creating"}`);
     } finally {
       setLoading(false);
     }
