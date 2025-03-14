@@ -23,7 +23,12 @@ export function OrdinalItem({ data }: OrdinalItemProps) {
       <CardContent className="p-4 flex flex-col gap-3 md:min-w-60 md:max-w-60 min-w-44 max-w-44">
         <div className="flex justify-center">
           <Avatar className="w-24 h-24">
-            {data.render_url && <AvatarImage src={data.render_url} />}
+            <AvatarImage
+              src={
+                data.render_url ??
+                `https://bis-ord-content.fra1.cdn.digitaloceanspaces.com/ordinals/${data.inscription_id}`
+              }
+            />
             <AvatarFallback />
           </Avatar>
         </div>

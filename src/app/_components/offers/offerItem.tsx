@@ -40,9 +40,12 @@ export function OfferItem({ data }: OfferItemProps) {
     <div className="flex justify-between items-center gap-2.5 p-2.5 rounded-md md:rounded-full bg-[#191919]">
       <div className="flex flex-col md:flex-row items-center gap-2.5">
         <Avatar className="w-12 h-12">
-          {data.ordinal.render_url && (
-            <AvatarImage src={data.ordinal.render_url} />
-          )}
+          <AvatarImage
+            src={
+              data.ordinal.render_url ??
+              `https://bis-ord-content.fra1.cdn.digitaloceanspaces.com/ordinals/${data.ordinal.inscription_id}`
+            }
+          />
           <AvatarFallback />
         </Avatar>
 

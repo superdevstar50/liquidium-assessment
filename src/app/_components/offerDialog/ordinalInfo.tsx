@@ -40,7 +40,12 @@ export function OrdinalInfo({ ordinalId }: OrdinalInfoProps) {
     <div className="flex flex-col gap-2">
       <div className="flex gap-4">
         <Avatar className="w-24 h-24">
-          {data.render_url && <AvatarImage src={data.render_url} />}
+          <AvatarImage
+            src={
+              data.render_url ??
+              `https://bis-ord-content.fra1.cdn.digitaloceanspaces.com/ordinals/${data.inscription_id}`
+            }
+          />
           <AvatarFallback />
         </Avatar>
         <div className="w-full">
