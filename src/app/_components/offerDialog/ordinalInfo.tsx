@@ -38,7 +38,7 @@ export function OrdinalInfo({ ordinalId }: OrdinalInfoProps) {
 
   return (
     <div className="flex flex-col gap-2">
-      <div className="flex gap-4">
+      <div className="flex flex-col md:flex-row gap-4 items-center">
         <Avatar className="w-24 h-24">
           <AvatarImage
             src={
