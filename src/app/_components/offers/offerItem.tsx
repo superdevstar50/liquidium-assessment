@@ -72,7 +72,7 @@ export function OfferItem({ data }: OfferItemProps) {
             Offer:{" "}
             <span className="font-semibold">{formatBTC(data.amount)}</span>
           </Badge>
-          <Badge className="text-xs" variant="secondary">
+          <Badge className="text-xs ml-2 my-1" variant="secondary">
             Floor:{" "}
             <span className="font-semibold">
               {data.ordinal.floorAmount
@@ -80,7 +80,7 @@ export function OfferItem({ data }: OfferItemProps) {
                 : "N/A"}
             </span>
           </Badge>
-          <Badge className="text-xs" variant="secondary">
+          <Badge className="text-xs ml-2 my-1" variant="secondary">
             LTV:{" "}
             <span className="font-semibold">
               {data.ordinal.floorAmount
@@ -90,10 +90,10 @@ export function OfferItem({ data }: OfferItemProps) {
                 : "N/A"}{" "}
             </span>
           </Badge>
-          <Badge className="text-xs" variant="secondary">
+          <Badge className="text-xs ml-2 my-1" variant="secondary">
             Days: <span className="font-semibold">{data.term}</span>
           </Badge>
-          <Badge className="text-xs" variant="secondary">
+          <Badge className="text-xs ml-2 my-1" variant="secondary">
             Interest: <span className="font-semibold">{data.interest}%</span>
           </Badge>
         </div>
