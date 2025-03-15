@@ -16,6 +16,10 @@ export function formatInscriptionId(
     showLen = 5;
   }
 
+  if (input.length <= showLen + 4) {
+    return input;
+  }
+
   return `${input.slice(0, showLen)}...${input.slice(input.length - 4)}`;
 }
 
@@ -29,7 +33,7 @@ export function formatUSD(input: number) {
 }
 
 export function formatBTC(input: number) {
-  return `₿${input.toFixed(6)}`;
+  return `₿${parseFloat(input.toFixed(6))}`;
 }
 
 export const sleep = (time: number) =>

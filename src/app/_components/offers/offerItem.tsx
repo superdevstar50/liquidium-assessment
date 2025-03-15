@@ -103,6 +103,7 @@ export function OfferItem({ data }: OfferItemProps) {
           variant="secondary"
           className="rounded-full"
           onClick={handleEdit}
+          data-testid="edit"
         >
           <Pen />
         </Button>
@@ -112,6 +113,7 @@ export function OfferItem({ data }: OfferItemProps) {
               variant="destructive"
               className="rounded-full"
               disabled={loading}
+              data-testid="delete"
             >
               {loading ? <Spinner /> : <Trash2 />}
             </Button>
