@@ -35,10 +35,20 @@ export async function fetchOrdinalInfo() {
   };
 }
 
-export async function fetchOrdinals({ query = "" }: { query?: string } = {}) {
+export interface FetchOrdinalsProps {
+  query?: string;
+  start?: number;
+  count?: number;
+}
+
+export async function fetchOrdinals({
+  query = "",
+  start = 0,
+  count = 5,
+}: FetchOrdinalsProps = {}) {
   const allowedOrdinals = ordinals.data.filter(isAllowedOrdinal);
   if (!query) {
-    return await mapBestOffer(allowedOrdinals);
+    return await mapBestOffer(allowedOrdinals.slice(start, start + count));
   }
 
   const clearedQuery = query.toLowerCase().trim();
@@ -50,7 +60,7 @@ export async function fetchOrdinals({ query = "" }: { query?: string } = {}) {
           ordinal.inscription_name?.toLowerCase().includes(clearedQuery) ||
           ordinal.collection_name?.toLowerCase().includes(clearedQuery)
       )
-      .slice(0, 10)
+      .slice(start, start + count)
   );
 }
 

@@ -1,13 +1,13 @@
 "use client";
-import { fetchOrdinals } from "@/actions/ordinals";
+import { fetchOrdinals, FetchOrdinalsProps } from "@/actions/ordinals";
 import { OrdinalItem } from "./ordinalItem";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useFetch } from "@/hooks/useFetch";
-import { useCallback } from "react";
-import { useEvent } from "@/hooks/useEvent";
+import { useCallback, useEffect } from "react";
+import { useInfiniteFetch } from "@/hooks/useInfiniteFetch";
+import { useInView } from "react-intersection-observer";
 
 function LoadingUi() {
-  return new Array(5)
+  return new Array(10)
     .fill(0)
     .map((_, index) => (
       <Skeleton className="md:min-w-52 min-w-44 h-72" key={index} />
@@ -19,26 +19,45 @@ export interface OrdinalListProps {
 }
 
 export function OrdinalList({ query }: OrdinalListProps) {
+  const { ref, inView } = useInView();
+
   const {
     data: ordinals,
     loading,
-    refetch,
-  } = useFetch({
-    query: useCallback(() => fetchOrdinals({ query }), [query]),
+    fetchNextPage,
+    hasMore,
+  } = useInfiniteFetch({
+    query: useCallback(
+      (params?: FetchOrdinalsProps) =>
+        fetchOrdinals({ query, ...(params ?? {}) }),
+      [query]
+    ),
+    initialParams: {
+      start: 0,
+      count: 10,
+    },
+    getNextParams: useCallback(
+      (lastParams: FetchOrdinalsProps) => ({
+        ...lastParams,
+        start: (lastParams.start ?? 0) + 10,
+      }),
+      []
+    ),
   });
 
-  useEvent(
-    "onOfferUpdate",
-    useCallback(() => {
-      refetch(true);
-    }, [refetch])
+  useEffect(() => {
+    if (inView && hasMore) {
+      fetchNextPage();
+    }
+  }, [inView, fetchNextPage, hasMore]);
+
+  return (
+    <div className="p-5 flex gap-5 rounded-3xl border border-neutral-700 overflow-auto">
+      {ordinals?.map((ordinal, index) => (
+        <OrdinalItem key={index} data={ordinal} />
+      ))}
+      {loading && <LoadingUi />}
+      {!loading && <div ref={ref} />}
+    </div>
   );
-
-  if (loading) {
-    return <LoadingUi />;
-  }
-
-  return ordinals?.map((ordinal, index) => (
-    <OrdinalItem key={index} data={ordinal} />
-  ));
 }

@@ -22,9 +22,7 @@ export function Ordinals() {
         />
       </div>
 
-      <div className="p-5 flex gap-5 rounded-3xl border border-neutral-700 overflow-auto">
-        <OrdinalList query={debouncedQuery} />
-      </div>
+      <OrdinalList query={debouncedQuery} />
     </div>
   );
 }
