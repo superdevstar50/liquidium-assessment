@@ -4,6 +4,7 @@ import { OrdinalItem } from "./ordinalItem";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useFetch } from "@/hooks/useFetch";
 import { useCallback } from "react";
+import { useEvent } from "@/hooks/useEvent";
 
 function LoadingUi() {
   return new Array(5)
@@ -18,9 +19,20 @@ export interface OrdinalListProps {
 }
 
 export function OrdinalList({ query }: OrdinalListProps) {
-  const { data: ordinals, loading } = useFetch({
+  const {
+    data: ordinals,
+    loading,
+    refetch,
+  } = useFetch({
     query: useCallback(() => fetchOrdinals({ query }), [query]),
   });
+
+  useEvent(
+    "onOfferUpdate",
+    useCallback(() => {
+      refetch(true);
+    }, [refetch])
+  );
 
   if (loading) {
     return <LoadingUi />;

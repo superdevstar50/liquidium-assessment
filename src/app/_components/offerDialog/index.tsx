@@ -20,6 +20,7 @@ import { mapCollectionFloor } from "@/actions/utils";
 import { OrdinalWithFloor } from "@/types";
 import { toast } from "sonner";
 import { getWalletAddress } from "@/utils/wallet";
+import { useEvent } from "@/hooks/useEvent";
 
 type OfferInputType = Omit<Offer, "id" | "ordinalId" | "walletAddress">;
 
@@ -50,6 +51,8 @@ export function OfferDialog({
   const [loading, setLoading] = useState(false);
 
   const [ordinal, setOrdinal] = useState<OrdinalWithFloor>();
+
+  const { dispatch: dispatchOfferUpdateEvent } = useEvent("onOfferUpdate");
 
   useEffect(() => {
     if (!open) {
@@ -95,6 +98,7 @@ export function OfferDialog({
           walletAddress: getWalletAddress(),
         });
 
+        dispatchOfferUpdateEvent({});
         toast.success("Successfully created");
       }
 

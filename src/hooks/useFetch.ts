@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 export interface UseFetchProps<T> {
   query: () => Promise<T>;
@@ -9,19 +9,30 @@ export function useFetch<T>({ query }: UseFetchProps<T>) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState();
 
-  useEffect(() => {
-    setLoading(true);
-    query()
-      .then((data) => {
-        setData(data);
-      })
-      .catch((err) => {
-        setError(err);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  }, [query]);
+  const refetch = useCallback(
+    (backgroundMode = false) => {
+      if (!backgroundMode) {
+        setLoading(true);
+      }
+      query()
+        .then((data) => {
+          setData(data);
+        })
+        .catch((err) => {
+          setError(err);
+        })
+        .finally(() => {
+          if (!backgroundMode) {
+            setLoading(false);
+          }
+        });
+    },
+    [query]
+  );
 
-  return { data, loading, error };
+  useEffect(() => {
+    refetch();
+  }, [refetch]);
+
+  return { data, loading, error, refetch };
 }
