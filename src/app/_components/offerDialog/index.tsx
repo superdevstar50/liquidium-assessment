@@ -98,9 +98,10 @@ export function OfferDialog({
           walletAddress: getWalletAddress(),
         });
 
-        dispatchOfferUpdateEvent({});
         toast.success("Successfully created");
       }
+
+      dispatchOfferUpdateEvent({ ordinalId });
 
       setOpen?.(false);
     } catch {

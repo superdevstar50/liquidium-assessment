@@ -5,7 +5,7 @@ interface AppEvent<PayloadType = unknown> extends Event {
 }
 
 export interface CustomWindowEventMap extends WindowEventMap {
-  onOfferUpdate: AppEvent<never>;
+  onOfferUpdate: AppEvent<{ ordinalId: string }>;
 }
 
 export const useEvent = <PayloadType = unknown>(

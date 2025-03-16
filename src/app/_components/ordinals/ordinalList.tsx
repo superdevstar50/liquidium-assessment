@@ -53,8 +53,8 @@ export function OrdinalList({ query }: OrdinalListProps) {
 
   return (
     <div className="p-5 flex gap-5 rounded-3xl border border-neutral-700 overflow-auto">
-      {ordinals?.map((ordinal, index) => (
-        <OrdinalItem key={index} data={ordinal} />
+      {ordinals?.map((ordinal) => (
+        <OrdinalItem key={ordinal.inscription_id} data={ordinal} />
       ))}
       {loading && <LoadingUi />}
       {!loading && <div ref={ref} />}

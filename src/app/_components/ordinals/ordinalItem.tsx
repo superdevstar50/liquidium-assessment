@@ -4,15 +4,32 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { OrdinalWithBestOffer } from "@/types";
 import { formatBTC, formatInscriptionId, satToBtc } from "@/utils";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { OfferDialog } from "../offerDialog";
+import { useEvent } from "@/hooks/useEvent";
+import { mapBestOffer } from "@/actions/utils";
 
 export interface OrdinalItemProps {
   data: OrdinalWithBestOffer;
 }
 
-export function OrdinalItem({ data }: OrdinalItemProps) {
+export function OrdinalItem({ data: _data }: OrdinalItemProps) {
   const [open, setOpen] = useState(false);
+  const [data, setData] = useState(_data);
+
+  useEvent(
+    "onOfferUpdate",
+    useCallback(
+      (detail: { ordinalId: string }) => {
+        if (detail.ordinalId) {
+          mapBestOffer([_data]).then((ordinals) => {
+            setData(ordinals[0]);
+          });
+        }
+      },
+      [_data]
+    )
+  );
 
   const handleCreateOffer = () => {
     setOpen(true);

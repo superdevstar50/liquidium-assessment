@@ -16,5 +16,5 @@ export async function OfferList() {
     return <>You haven&apos;t created any offers yet.</>;
   }
 
-  return offers.map((offer, index) => <OfferItem key={index} data={offer} />);
+  return offers.map((offer) => <OfferItem key={offer.id} data={offer} />);
 }
