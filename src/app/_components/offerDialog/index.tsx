@@ -19,8 +19,9 @@ import { fetchOrdinal } from "@/actions/ordinals";
 import { mapCollectionFloor } from "@/actions/utils";
 import { OrdinalWithFloor } from "@/types";
 import { toast } from "sonner";
+import { getWalletAddress } from "@/utils/wallet";
 
-type OfferInputType = Omit<Offer, "id" | "ordinalId">;
+type OfferInputType = Omit<Offer, "id" | "ordinalId" | "walletAddress">;
 
 export interface OfferDialogProps {
   open: boolean;
@@ -91,6 +92,7 @@ export function OfferDialog({
         await createOffer({
           ...data,
           ordinalId,
+          walletAddress: getWalletAddress(),
         });
 
         toast.success("Successfully created");

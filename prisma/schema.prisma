@@ -9,9 +9,10 @@ datasource db {
 }
 
 model Offer {
-  id        String @id @default(cuid())
-  amount    Float
-  term      Int
-  interest  Float
-  ordinalId String @map("ordinal_id")
+  id            String @id @default(cuid())
+  amount        Float
+  term          Int
+  interest      Float
+  ordinalId     String @map("ordinal_id")
+  walletAddress String
 }

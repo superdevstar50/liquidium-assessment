@@ -16,7 +16,10 @@ export async function createOffer(offer: Omit<Offer, "id">) {
   return createdOffer;
 }
 
-export async function updateOffer({ id, ...offer }: Omit<Offer, "ordinalId">) {
+export async function updateOffer({
+  id,
+  ...offer
+}: Omit<Offer, "ordinalId" | "walletAddress">) {
   const updatedOffer = await db.offer.update({
     where: {
       id: id,
@@ -29,8 +32,16 @@ export async function updateOffer({ id, ...offer }: Omit<Offer, "ordinalId">) {
   return updatedOffer;
 }
 
-export async function fetchOffers() {
-  const offers = await db.offer.findMany();
+export async function fetchOffers({
+  walletAddress,
+}: {
+  walletAddress: string;
+}) {
+  const offers = await db.offer.findMany({
+    where: {
+      walletAddress,
+    },
+  });
 
   return await Promise.all(
     offers.map(async (offer) => ({
