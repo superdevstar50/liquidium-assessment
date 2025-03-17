@@ -4,6 +4,17 @@ import { Ordinal } from "@/types";
 import { fetchOffersWithOrdinalId } from "./offers";
 import { satToBtc } from "@/utils";
 
+const ordinalsByCollection = ordinals.data.reduce((acc, ordinal) => {
+  if (!ordinal.collection_name) {
+    return acc;
+  }
+  if (!acc[ordinal.collection_name]) {
+    acc[ordinal.collection_name] = [];
+  }
+  acc[ordinal.collection_name].push(ordinal);
+  return acc;
+}, {} as Record<string, Ordinal[]>);
+
 export async function mapBestOffer(ordinals: Ordinal[]) {
   const offers = await Promise.all(
     ordinals.map((ordinal) =>
@@ -21,17 +32,19 @@ export async function mapBestOffer(ordinals: Ordinal[]) {
 
 export async function mapCollectionFloor(_ordinals: Ordinal[]) {
   return _ordinals.map((ordinal) => {
-    const floorAmount = ordinals.data
-      .filter(
-        (_ordinal) => _ordinal.collection_name === ordinal.collection_name
-      )
-      .reduce(
-        (acc, ordinal) =>
-          ordinal.last_sale_price && acc > ordinal.last_sale_price
-            ? ordinal.last_sale_price
-            : acc,
-        Infinity
-      );
+    if (!ordinal.collection_name) {
+      return {
+        ...ordinal,
+        floorAmount: null,
+      };
+    }
+    const floorAmount = ordinalsByCollection[ordinal.collection_name].reduce(
+      (acc, ordinal) =>
+        ordinal.last_sale_price && acc > ordinal.last_sale_price
+          ? ordinal.last_sale_price
+          : acc,
+      Infinity
+    );
     return {
       ...ordinal,
       floorAmount: floorAmount === Infinity ? null : satToBtc(floorAmount),

@@ -17,6 +17,8 @@ const isAllowedOrdinal = (ordinal: Ordinal) =>
   ordinal.slug &&
   supportedOrdinalsSet.has(ordinal.slug);
 
+const allowedOrdinals = ordinals.data.filter(isAllowedOrdinal);
+
 export async function fetchOrdinalInfo() {
   let portfolioValue = 0;
   let availableValue = 0;
@@ -46,7 +48,6 @@ export async function fetchOrdinals({
   start = 0,
   count = 5,
 }: FetchOrdinalsProps = {}) {
-  const allowedOrdinals = ordinals.data.filter(isAllowedOrdinal);
   if (!query) {
     return await mapBestOffer(allowedOrdinals.slice(start, start + count));
   }
