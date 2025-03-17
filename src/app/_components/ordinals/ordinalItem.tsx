@@ -66,13 +66,11 @@ export function OrdinalItem({ data: _data }: OrdinalItemProps) {
         </div>
         <div className="flex md:flex-row flex-col gap-2.5">
           <Badge variant="secondary" className="text-xs">
-            Floor: <b>{formatBTC(satToBtc(data.last_sale_price ?? 0))}</b>
+            Floor: {formatBTC(satToBtc(data.last_sale_price ?? 0))}
           </Badge>
           <Badge variant="secondary" className="text-xs">
             Best:{" "}
-            <b>
-              {data.bestOfferAmount ? formatBTC(data.bestOfferAmount) : "N/A"}
-            </b>
+            {data.bestOfferAmount ? formatBTC(data.bestOfferAmount) : "N/A"}
           </Badge>
         </div>
 
