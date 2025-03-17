@@ -5,6 +5,7 @@ import db from "@/lib/prisma";
 import ordinals from "@/data/your_owned_ordinals.json";
 import { mapCollectionFloor } from "./utils";
 import { revalidatePath } from "next/cache";
+import { walletAddress } from "./wallet";
 
 export async function createOffer(offer: Omit<Offer, "id">) {
   const createdOffer = await db.offer.create({
@@ -58,9 +59,15 @@ export async function fetchOffers({
 }
 
 export async function fetchOffersWithOrdinalId({ id }: { id: string }) {
+  const wallet = await walletAddress();
+  if (!wallet) {
+    return [];
+  }
+
   const offers = await db.offer.findMany({
     where: {
       ordinalId: id,
+      walletAddress: wallet,
     },
   });
 
